@@ -101,9 +101,9 @@
   <div class="container-full">
     <div class="navbar-header">
       <div class="navbar-logo">
-        <a href="${context}/">Azkaban</a>
+        <a href="${context}/">Content</a>
         <div class="navbar-version">
-          ${version}
+          1.0.0
         </div>
       </div>
 
@@ -149,9 +149,7 @@
             #end
           #end
 
-          <li#if($current_page == 'doc') class="active"#end
-                                         onClick="navMenuClick('https://azkaban.readthedocs.io/en/latest/')">
-            <a href="https://azkaban.readthedocs.io/en/latest/">Documentation</a></li>
+
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
