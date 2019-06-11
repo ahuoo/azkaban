@@ -101,7 +101,7 @@
   <div class="container-full">
     <div class="navbar-header">
       <div class="navbar-logo">
-        <a href="${context}/">Content</a>
+        <a href="${context}/">Moody's</a>
         <div class="navbar-version">
           1.0.0
         </div>
