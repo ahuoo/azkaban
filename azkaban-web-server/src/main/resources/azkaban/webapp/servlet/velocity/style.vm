@@ -17,7 +17,7 @@
 <meta charset="utf-8">
 <title>#appname()</title>
 
-<link rel="shortcut icon" href=""/>
+
 <!-- Bootstrap core CSS -->
 <link href="/css/bootstrap.css" rel="stylesheet">
 <link href="/css/azkaban.css?v=1556216524794" rel="stylesheet">
