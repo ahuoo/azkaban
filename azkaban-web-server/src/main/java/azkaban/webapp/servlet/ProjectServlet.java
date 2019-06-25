@@ -163,17 +163,17 @@ public class ProjectServlet extends LoginAbstractAzkabanServlet {
       page.add("hideCreateProject", true);
     }
 
-    if (hasParam(req, "all")) {
-      final List<Project> projects = manager.getProjects();
-      page.add("viewProjects", "all");
+    if (hasParam(req, "personal")) {
+      final List<Project> projects = manager.getUserProjects(user);
+      page.add("viewProjects", "personal");
       page.add("projects", projects);
     } else if (hasParam(req, "group")) {
       final List<Project> projects = manager.getGroupProjects(user);
       page.add("viewProjects", "group");
       page.add("projects", projects);
     } else {
-      final List<Project> projects = manager.getUserProjects(user);
-      page.add("viewProjects", "personal");
+      final List<Project> projects = manager.getProjects();
+      page.add("viewProjects", "all");
       page.add("projects", projects);
     }
 
