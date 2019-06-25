@@ -5,6 +5,7 @@ apply plugin: 'distribution'
 dependencies {
     compile(project(':azkaban-web-server'))
     compile(project(':azkaban-exec-server'))
+    compile group: 'org.apache.directory.api', name: 'api-all', version: '1.0.0-M31'
 
     runtime deps.h2
 }
