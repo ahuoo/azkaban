@@ -115,10 +115,10 @@
               <tr>
                 <td class="first">
                   #if ($job.attempt > 0)
-                    <a href="${context}/executor?execid=${job.execId}">${job.execId}
+                    <a href="${context}/executor?execid=${job.execId}#jobslist">${job.execId}
                       .${job.attempt}</a>
                   #else
-                    <a href="${context}/executor?execid=${job.execId}">${job.execId}</a>
+                    <a href="${context}/executor?execid=${job.execId}#jobslist">${job.execId}</a>
                   #end
                 </td>
                 <td>
