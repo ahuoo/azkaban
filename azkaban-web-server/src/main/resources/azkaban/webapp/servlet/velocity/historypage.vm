@@ -106,7 +106,7 @@
                   $velocityCount
                 </td>
                 <td class="tb-name execId">
-                  <a href="${context}/executor?execid=${flow.executionId}">${flow.executionId}</a>
+                  <a href="${context}/executor?execid=${flow.executionId}#jobslist">${flow.executionId}</a>
                 </td>
                 <td class="tb-name">
                   <a href="${context}/executor?execid=${flow.executionId}">${flow.flowId}</a>
