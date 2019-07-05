@@ -1,0 +1,25 @@
+
+## Delete config modal.
+
+<div class="modal" id="delete-config-modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Delete Configuration</h4>
+      </div>
+      <div class="modal-body">
+        <p><strong>Warning:</strong> This configuration will be deleted and may not be recoverable.
+         Are you sure to delete it?
+        </p>
+      </div>
+      <div class="modal-footer">
+
+          <input type="hidden" id="itemId" value="">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="delete-btn" onclick="deleteItem()">Delete</button>
+
+      </div>
+    </div>
+  </div>
+</div>

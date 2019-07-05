@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+
+#parse ("azkaban/webapp/servlet/velocity/style.vm")
+#parse ("azkaban/webapp/servlet/velocity/javascript.vm")
+
+    <script type="text/javascript" src="${context}/js/jqueryui/jquery-ui-1.10.1.custom.js"></script>
+    <script type="text/javascript">
+      var contextURL = "${context}";
+      var currentTime = ${currentTime};
+      var timezone = "${timezone}";
+      var homeDir = "${homedir}";
+    </script>
+
+#parse ("azkaban/viewer/config/velocity/config-js.vm")
+
+#parse ("azkaban/viewer/config/velocity/config-css.vm")
+
+  <script type="text/javascript" src="${context}/js/jquery/jquery.tablesorter.js"></script>
+  <script type="text/javascript">
+
+    $(document).ready(function () {
+      var jobTable = $("#config-dir");
+      jobTable.tablesorter();
+    });
+  </script>
+
+  </head>
+  <body>
+
+#set ($current_page="$viewerName")
+#parse ("azkaban/webapp/servlet/velocity/nav.vm")
+
+#if ($errorMsg)
+  #parse ("azkaban/webapp/servlet/velocity/errormsg.vm")
+#else
+
+
+      <div class="az-page-header">
+        <div class="container-full">
+          <div class="row">
+            <div class="header-title">
+              <h1><a href="${context}/config">Configuration</a></h1>
+            </div>
+            <div class="header-control">
+              <form id="search-form" method="get" class="form-inline header-form" role="form">
+                <input type="hidden" name="search" value="true">
+                <div class="form-group">
+                  <div class="input-group">
+                  <input type="text" id="searchtextbox"
+                         placeholder="lob/source/target containing ..." value=#if($search_term) "$esc.html(${search_term})" #else
+                    "" #end class="form-control input-sm" name="searchterm">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary btn-sm">Quick Search</button>
+                        <button type="button" class="btn btn-success btn-sm" id="createNew"><span class="glyphicon glyphicon-plus"></span> Create New</button>
+                      </span>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    <div class="container-full">
+
+  #parse ("azkaban/webapp/servlet/velocity/alerts.vm")
+
+   #if ($jobList)
+
+      <div class="row">
+        <div class="col-xs-12">
+            <table id="config-dir" class="table table-condensed table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Lob</th>
+                  <th>Source</th>
+                  <th>Target</th>
+                  <th class="date">Start Time</th>
+                  <th class="date">End Time</th>
+                  <th class="elapse">Elapsed</th>
+                   <th>Error</th>
+                  <th class="status">Status</th>
+                  <th class="action">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+
+      #foreach ($job in $jobList)
+                <tr>
+                  <td>${job.id}</td>
+                  <td>${job.lob}</td>
+                  <td>${job.source}</td>
+                   <td>${job.target}</td>
+                  <td>$TimeUtils.formatDateTime(${job.beginDt})</td>
+                  <td>$TimeUtils.formatDateTime(${job.endDt})</td>
+                  <td>$TimeUtils.formatDuration(${job.beginDt}, ${job.endDt})</td>
+                  <td>
+                      ## Changed the style of "Show" button to be consistent with other buttons.
+                      <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
+                              data-target="#errorDetail-${velocityCount}">Show
+                      </button>
+                 </td>
+                 <div class="modal fade" id="errorDetail-${velocityCount}" tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="errorDetailLabel">
+                   <div class="modal-dialog" role="document">
+                     <div class="modal-content">
+                       <div class="modal-header">
+                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                           <span aria-hidden="true">&times;</span></button>
+                         <h4 class="modal-title" id="errorDetailLabel">Error Message</h4>
+                       </div>
+                       <div class="modal-body">
+                         <pre>#if($job.errorMsg) $job.errorMsg #else  No error log found. #end</pre>
+                       </div>
+                       <div class="modal-footer">
+                         <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                         </button>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+
+                 <td><div class="status ${job.status}">$WebUtils.formatStatus(${job.status})</div></td>
+                 <td>
+                       <button id="project-delete-btn" class="btn btn-sm btn-danger" onclick="confirmDeletion(${job.id})">
+                         <span class="glyphicon glyphicon-trash"></span>
+                       </button>
+                 </td>
+                </tr>
+      #end
+    #else
+                <tr><td>No Jobs in config</td></tr>
+    #end
+              </tbody>
+            </table>
+
+        </div><!-- /.col-xs-12 -->
+      </div><!-- /.row -->
+
+#parse ("azkaban/viewer/config/velocity/config-create-new-modal.vm")
+#parse ("azkaban/viewer/config/velocity/config-conformation-alert.vm")
+
+#end
+    </div><!-- /.container-full -->
+  </body>
+</html>

@@ -1,0 +1,57 @@
+ <script type="text/javascript">
+$(function() {
+  $('#createNew').click( function() {
+    $('#messageDialog').modal();
+    $('#lob').focus();
+  });
+
+  $('#submitCreateBtn').click( function() {
+    var lob = $('#lob').val();
+    var source = $('#source').val();
+    var target = $('#target').val();
+    var requestData = {
+      'action': 'createNew',
+      'lob': lob,
+      'source': source,
+      'target': target
+    };
+    var successHandler = function(data) {
+      if (data.error) {
+        $('#messageBox').text(data.error);
+      }
+      else {
+        location.reload(true);
+      }
+    };
+    $.post("", requestData, successHandler);
+  });
+
+  $('#proxyname').keyup(function(event) {
+    if (event.key == "Enter") {
+      $('#submitCreateBtn').click();
+    }
+  });
+});
+
+  function confirmDeletion(id){
+    $("#itemId").val(id);
+    $('#delete-config-modal').modal();
+  }
+
+  function deleteItem(){
+    var id = $('#itemId').val();
+    var requestData = {
+      'action': 'delete',
+      'id': id
+    };
+    var successHandler = function(data) {
+      if (data.error) {
+        $('#messageBox').text(data.error);
+      }
+      else {
+        location.reload(true);
+      }
+    };
+    $.post("", requestData, successHandler);
+  }
+</script>
