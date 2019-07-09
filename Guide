@@ -1,0 +1,37 @@
+#  Build web project in ANO-LXSPK200 and start server:
+cd /home/spark/workflow/azkaban; git pull; kill -9 $(ps aux|grep azkaban|awk '{print $2}');  ./gradlew clean; ./gradlew build -x test ; cd azkaban-solo-server/build/distributions/; unzip azkaban-solo-server*.zip; cd azkaban-solo-server*; ./bin/start-solo.sh
+
+
+#  Restart jetty
+rm soloServerLog*; kill -9 $(ps aux|grep azkaban|awk '{print $2}');  ./bin/start-solo.sh; tail -100f soloServer*
+
+
+#  Plugin Development
+1. The jars in  local/plugins/viewer/hdfs/extlib are not workable. even they are loaded by classloader, I don't know why?
+if you want to put extra jars for plugin, recommend to put in in /local/extlib/ in deployment.
+
+
+2. How do you dev your plugin in IDEA?
+   - Add your runtime deplendency jars in azkaban-solo-server/build.gradle, they will be loaded when runnning AzkabanSingleServer
+    azkaban\azkaban-solo-server\build.gradle
+        dependencies {
+            runtime deps.h2
+            runtime deps.hadoopCommon
+            runtime deps.hiveMetastore
+        }
+
+    - azkaban\settings.gradle
+        include 'az-config-viewer'
+    - add file: C:\w\workspace\azkaban\local\plugins\viewer\config\conf\plugin.properties
+        viewer.name=Configuration
+        viewer.path=config
+        viewer.order=1
+        viewer.hidden=false
+        viewer.servlet.class=azkaban.viewer.config.ConfigBrowserServlet
+
+# Deploy my plugin to server
+cd /home/spark/workflow/azkaban/azkaban-solo-server/build/distributions/azkaban-solo-server-3.74.0-15-g690e8f9/plugins/viewer/config/lib/;
+rm -rf az-config-viewer-3.74.0-15-g690e8f99.jar;
+wget http://caih-10w1/az-config-viewer-3.74.0-15-g690e8f99.jar;
+cd /home/spark/workflow/azkaban/azkaban-solo-server/build/distributions/azkaban-solo-server-3.74.0-15-g690e8f9;
+rm soloServerLog*; kill -9 $(ps aux|grep azkaban|awk '{print $2}');  ./bin/start-solo.sh;
