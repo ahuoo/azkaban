@@ -93,8 +93,39 @@
                 <tr>
                   <td>${job.id}</td>
                   <td>${job.lob}</td>
-                  <td>${job.source}</td>
-                   <td>${job.target}</td>
+                  <td>
+                    #set ($strlen = $job.source.length())
+                    #if ($strlen>60)
+                       ## Changed the style of "Show" button to be consistent with other buttons.
+                        <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
+                                data-target="#source-${velocityCount}">Show
+                        </button>
+
+                         <div class="modal fade" id="source-${velocityCount}" tabindex="-1"
+                              role="dialog"
+                              aria-labelledby="errorDetailLabel">
+                           <div class="modal-dialog" role="document">
+                             <div class="modal-content">
+                               <div class="modal-header">
+                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                   <span aria-hidden="true">&times;</span></button>
+                                 <h4 class="modal-title" id="query">Source  </h4>
+                               </div>
+                               <div class="modal-body">
+                                 <pre>${job.source}</pre>
+                               </div>
+                               <div class="modal-footer">
+                                 <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                 </button>
+                               </div>
+                             </div>
+                           </div>
+                         </div>
+                    #else
+                         ${job.source}
+                    #end
+                  </td>
+                  <td>${job.target}</td>
                   <td>$TimeUtils.formatDateTime(${job.beginDt})</td>
                   <td>$TimeUtils.formatDateTime(${job.endDt})</td>
                   <td>$TimeUtils.formatDuration(${job.beginDt}, ${job.endDt})</td>
@@ -103,28 +134,28 @@
                       <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
                               data-target="#errorDetail-${velocityCount}">Show
                       </button>
-                 </td>
-                 <div class="modal fade" id="errorDetail-${velocityCount}" tabindex="-1"
-                      role="dialog"
-                      aria-labelledby="errorDetailLabel">
-                   <div class="modal-dialog" role="document">
-                     <div class="modal-content">
-                       <div class="modal-header">
-                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                           <span aria-hidden="true">&times;</span></button>
-                         <h4 class="modal-title" id="errorDetailLabel">Error Message</h4>
-                       </div>
-                       <div class="modal-body">
-                         <pre>#if($job.errorMsg) $job.errorMsg #else  No error log found. #end</pre>
-                       </div>
-                       <div class="modal-footer">
-                         <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                         </button>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
 
+                       <div class="modal fade" id="errorDetail-${velocityCount}" tabindex="-1"
+                            role="dialog"
+                            aria-labelledby="errorDetailLabel">
+                         <div class="modal-dialog" role="document">
+                           <div class="modal-content">
+                             <div class="modal-header">
+                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                 <span aria-hidden="true">&times;</span></button>
+                               <h4 class="modal-title" id="errorDetailLabel">Error Message</h4>
+                             </div>
+                             <div class="modal-body">
+                               <pre>#if($job.errorMsg) $job.errorMsg #else  No error log found. #end</pre>
+                             </div>
+                             <div class="modal-footer">
+                               <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                               </button>
+                             </div>
+                           </div>
+                         </div>
+                       </div>
+                 </td>
                  <td><div class="status ${job.status}">$WebUtils.formatStatus(${job.status})</div></td>
                  <td>
                        <button id="project-delete-btn" class="btn btn-sm btn-danger" onclick="confirmDeletion(${job.id})">

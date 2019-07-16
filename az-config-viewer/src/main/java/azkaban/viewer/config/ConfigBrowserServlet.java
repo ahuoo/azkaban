@@ -62,7 +62,7 @@ public class ConfigBrowserServlet extends LoginAbstractAzkabanServlet {
     }catch (Exception e){
       e.printStackTrace();
     }
-
+    page.add("viewerName", viewerName);
     page.render();
   }
 
@@ -84,6 +84,7 @@ public class ConfigBrowserServlet extends LoginAbstractAzkabanServlet {
     }
     if(action.equals("delete")){
       String id = getParam(req, "id");
+      logger.info(id +" was deleted by user: " + this.getUsername(req, session));
       final ConfigDao configDao = ServiceProvider.SERVICE_PROVIDER.getInstance(ConfigDao.class);
       try {
         configDao.delJobStatus(id);
