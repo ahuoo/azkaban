@@ -1,9 +1,3 @@
-
-# build in ANO-LXSPK200:
-cd /home/spark/workflow/azkaban; git pull; kill -9 $(ps aux|grep azkaban|awk '{print $2}');  ./gradlew clean; ./gradlew build -x test ; cd azkaban-solo-server/build/distributions/; unzip azkaban-solo-server*.zip; cd azkaban-solo-server*; ./bin/start-solo.sh
-
-
-
 # Azkaban
 
 [![Build Status](http://img.shields.io/travis/azkaban/azkaban.svg?style=flat)](https://travis-ci.org/azkaban/azkaban)[![codecov.io](https://codecov.io/github/azkaban/azkaban/branch/master/graph/badge.svg)](https://codecov.io/github/azkaban/azkaban)[![Join the chat at https://gitter.im/azkaban-workflow-engine/Lobby](https://badges.gitter.im/azkaban-workflow-engine/Lobby.svg)](https://gitter.im/azkaban-workflow-engine/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)[![Documentation Status](https://readthedocs.org/projects/azkaban/badge/?version=latest)](http://azkaban.readthedocs.org/en/latest/?badge=latest)
@@ -79,3 +73,6 @@ make html
 
 **[July, 2018]** We are actively improving our documentation. Everyone in the AZ community is 
 welcome to submit a pull request to edit/fix the documentation.
+
+# build in ANO-LXSPK200:
+cd /home/spark/workflow/azkaban; git pull; kill -9 $(ps aux|grep azkaban|awk '{print $2}');  ./gradlew clean; ./gradlew build -x test ; cd azkaban-solo-server/build/distributions/; unzip azkaban-solo-server*.zip; cd azkaban-solo-server*; ./bin/start-solo.sh
