@@ -13,6 +13,7 @@ import azkaban.ServiceProvider;
 import azkaban.executor.ExecutableFlow;
 import azkaban.executor.ExecutorManagerException;
 import azkaban.viewer.config.dao.ConfigDao;
+import azkaban.viewer.config.vo.ExecutionOptions;
 import azkaban.viewer.config.vo.JobStatus;
 import org.apache.log4j.Logger;
 
@@ -75,6 +76,7 @@ public class ConfigBrowserServlet extends LoginAbstractAzkabanServlet {
       jobStatus.setLob(getParam(req, "lob"));
       jobStatus.setSource(getParam(req, "source"));
       jobStatus.setTarget(getParam(req, "target"));
+      jobStatus.setExecutionOptions(ExecutionOptions.fromJson(getParam(req, "execution_options")));
       final ConfigDao configDao = ServiceProvider.SERVICE_PROVIDER.getInstance(ConfigDao.class);
       try {
         configDao.addJobStatus(jobStatus);

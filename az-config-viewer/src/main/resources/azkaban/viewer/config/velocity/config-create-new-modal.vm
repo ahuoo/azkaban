@@ -38,6 +38,11 @@
                     <div class="col-sm-9">
                       <input id="target" type="text" name="target" val="${user}" class="form-control">
                  </div>
+                  <br/> <br/> <br/>
+                  <label for="target" class="col-sm-3 control-label">Execution Options</label>
+                     <div class="col-sm-9">
+                       <input id="execution_options" type="text" name="execution_options" val="${user}" class="form-control">
+                  </div>
                 </div>
               </fieldset>
             </div>

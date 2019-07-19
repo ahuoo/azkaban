@@ -12,6 +12,8 @@ public class JobStatus {
     private String errorMsg;
     private Long beginDt;
     private Long endDt;
+    private Long executionTime;
+    private ExecutionOptions executionOptions;
 
     public Integer getId() {
         return id;
@@ -75,5 +77,21 @@ public class JobStatus {
 
     public void setEndDt(Long endDt) {
         this.endDt = endDt;
+    }
+
+    public Long getExecutionTime() {
+        return executionTime;
+    }
+
+    public void setExecutionTime(Long executionTime) {
+        this.executionTime = executionTime;
+    }
+
+    public ExecutionOptions getExecutionOptions() {
+        return executionOptions;
+    }
+
+    public void setExecutionOptions(ExecutionOptions executionOptions) {
+        this.executionOptions = executionOptions;
     }
 }

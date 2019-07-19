@@ -78,9 +78,11 @@
                   <th>Id</th>
                   <th>Lob</th>
                   <th>Source</th>
-                  <th>Target</th>
+                  <th>Target FileName</th>
+                  <th>Execution Options</th>
                   <th class="date">Start Time</th>
                   <th class="date">End Time</th>
+
                   <th class="elapse">Elapsed</th>
                    <th>Error</th>
                   <th class="status">Status</th>
@@ -126,35 +128,68 @@
                     #end
                   </td>
                   <td>${job.target}</td>
+                  <td>
+                        #if (${job.executionOptions.toJson()})
+                                  ## Changed the style of "Show" button to be consistent with other buttons.
+                                    <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
+                                            data-target="#executionOptions-${velocityCount}">Show
+                                    </button>
+
+                                    ## Distinguished executionOptions of each
+                                      <div class="modal fade" id="executionOptions-${velocityCount}" tabindex="-1"
+                                           role="dialog"
+                                           aria-labelledby="executionOptionsLabel">
+                                        <div class="modal-dialog" role="document">
+                                          <div class="modal-content">
+                                            <div class="modal-header">
+                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
+                                              <h4 class="modal-title" id="executionOptionsLabel">Execution Options</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                            ## Used <pre> to display text with code format
+                                              <pre>${job.executionOptions.toJson()}</pre>
+                                            </div>
+                                            <div class="modal-footer">
+                                              <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                              </button>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                        #end
+                  </td>
                   <td>$TimeUtils.formatDateTime(${job.beginDt})</td>
                   <td>$TimeUtils.formatDateTime(${job.endDt})</td>
-                  <td>$TimeUtils.formatDuration(${job.beginDt}, ${job.endDt})</td>
+                  <td>$TimeUtils.formatDuration(${job.beginDt},${job.endDt})</td>
                   <td>
-                      ## Changed the style of "Show" button to be consistent with other buttons.
-                      <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
-                              data-target="#errorDetail-${velocityCount}">Show
-                      </button>
+                     #if($job.errorMsg)
+                          ## Changed the style of "Show" button to be consistent with other buttons.
+                          <button type="button" class="btn btn-sm btn-info" data-toggle="modal"
+                                  data-target="#errorDetail-${velocityCount}">Show
+                          </button>
 
-                       <div class="modal fade" id="errorDetail-${velocityCount}" tabindex="-1"
-                            role="dialog"
-                            aria-labelledby="errorDetailLabel">
-                         <div class="modal-dialog" role="document">
-                           <div class="modal-content">
-                             <div class="modal-header">
-                               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true">&times;</span></button>
-                               <h4 class="modal-title" id="errorDetailLabel">Error Message</h4>
-                             </div>
-                             <div class="modal-body">
-                               <pre>#if($job.errorMsg) $job.errorMsg #else  No error log found. #end</pre>
-                             </div>
-                             <div class="modal-footer">
-                               <button type="button" class="btn btn-default" data-dismiss="modal">Close
-                               </button>
+                           <div class="modal fade" id="errorDetail-${velocityCount}" tabindex="-1"
+                                role="dialog"
+                                aria-labelledby="errorDetailLabel">
+                             <div class="modal-dialog" role="document">
+                               <div class="modal-content">
+                                 <div class="modal-header">
+                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                     <span aria-hidden="true">&times;</span></button>
+                                   <h4 class="modal-title" id="errorDetailLabel">Error Message</h4>
+                                 </div>
+                                 <div class="modal-body">
+                                   <pre>$job.errorMsg</pre>
+                                 </div>
+                                 <div class="modal-footer">
+                                   <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                   </button>
+                                 </div>
+                               </div>
                              </div>
                            </div>
-                         </div>
-                       </div>
+                       #end
                  </td>
                  <td><div class="status ${job.status}">$WebUtils.formatStatus(${job.status})</div></td>
                  <td>

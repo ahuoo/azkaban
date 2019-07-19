@@ -23,6 +23,7 @@ import azkaban.executor.*;
 import azkaban.utils.GZIPUtils;
 import azkaban.utils.JSONUtils;
 import azkaban.utils.Pair;
+import azkaban.viewer.config.vo.ExecutionOptions;
 import azkaban.viewer.config.vo.JobStatus;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.lang.StringUtils;
@@ -52,9 +53,9 @@ public class ConfigDao {
 
   public List<JobStatus> fetchJobStatus(String searchTerm)  throws ExecutorManagerException {
     try {
-      String sql = "SELECT id, lob,source,target, status,error_message,begin_date,end_date from project_flow_status ";
+      String sql = "SELECT id, lob,source,target, status,error_message,begin_date,end_date,latest_execution_time,execution_options from project_flow_status ";
       if(searchTerm!=null){
-        sql = "SELECT id, lob,source,target, status,error_message,begin_date,end_date from project_flow_status " +
+        sql = "SELECT id, lob,source,target, status,error_message,begin_date,end_date,latest_execution_time,execution_options from project_flow_status " +
                 " where lob like '%"+searchTerm+"%' or source like '%"+searchTerm+"%'  or target like '%"+searchTerm+"%'";
       }
       return this.dbOperator.query(sql, new FetchJobStatus());
@@ -64,9 +65,14 @@ public class ConfigDao {
   }
 
     public void addJobStatus(JobStatus jobStatus) throws ExecutorManagerException {
-      String sql = "INSERT INTO project_flow_status (lob, source, target) values (?,?,?)";
+      String sql = "INSERT INTO project_flow_status (lob, source, target, execution_options) values (?,?,?,?)";
       try {
-        this.dbOperator.update(sql,jobStatus.getLob(), jobStatus.getSource(), jobStatus.getTarget());
+        if(jobStatus.getExecutionOptions()!=null){
+          this.dbOperator.update(sql,jobStatus.getLob(), jobStatus.getSource(), jobStatus.getTarget(), jobStatus.getExecutionOptions().toJson());
+        }else{
+          this.dbOperator.update(sql,jobStatus.getLob(), jobStatus.getSource(), jobStatus.getTarget(), null);
+        }
+
       } catch (SQLException e) {
         throw new ExecutorManagerException("Error adding job status", e);
       }
@@ -98,6 +104,8 @@ public class ConfigDao {
         jobStatus.setErrorMsg(rs.getString(6));
         jobStatus.setBeginDt(rs.getLong(7));
         jobStatus.setEndDt(rs.getLong(8));
+        jobStatus.setExecutionTime(rs.getLong(9));
+        jobStatus.setExecutionOptions(ExecutionOptions.fromJson(rs.getString(10)));
         list.add(jobStatus);
       } while (rs.next());
 

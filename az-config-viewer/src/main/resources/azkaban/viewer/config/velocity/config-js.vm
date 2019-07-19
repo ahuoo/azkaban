@@ -9,11 +9,13 @@ $(function() {
     var lob = $('#lob').val();
     var source = $('#source').val();
     var target = $('#target').val();
+     var execution_options = $('#execution_options').val();
     var requestData = {
       'action': 'createNew',
       'lob': lob,
       'source': source,
-      'target': target
+      'target': target,
+      'execution_options': execution_options
     };
     var successHandler = function(data) {
       if (data.error) {
