@@ -75,7 +75,7 @@ public class TimeUtils {
     }
 
     final long durationMS;
-    if (endTime == -1) {
+    if (endTime == -1 || endTime<startTime) {
       durationMS = System.currentTimeMillis() - startTime;
     } else {
       durationMS = endTime - startTime;
