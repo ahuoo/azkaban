@@ -51,6 +51,11 @@
   </div><!-- /.login -->
 
 </div><!-- /container -->
+
+<div class="alert alert-warning text-center">
+  <strong>Important!</strong> Recommend you to visit this site in Chrome,
+</div>
+
 </body>
 </html>
 
