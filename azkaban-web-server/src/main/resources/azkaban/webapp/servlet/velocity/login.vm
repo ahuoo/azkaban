@@ -52,8 +52,8 @@
 
 </div><!-- /container -->
 
-<div class="alert alert-warning text-center">
-  <strong>Important!</strong> Recommend you to visit this site in Chrome,
+<div class="alert alert-warning text-center" style="position: fixed;bottom: 0;width: 100%;">
+  <strong>Tips:</strong> Recommend you to visit this site in Chrome,
 </div>
 
 </body>
