@@ -26,6 +26,7 @@ import azkaban.trigger.TriggerManagerAdapter;
 import azkaban.trigger.TriggerManagerException;
 import azkaban.trigger.builtin.BasicTimeChecker;
 import azkaban.trigger.builtin.ExecuteFlowAction;
+import azkaban.trigger.TriggerStatus;
 import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,15 +57,16 @@ public class TriggerBasedScheduleLoader implements ScheduleLoader {
     final List<TriggerAction> actions = createActions(s);
 
     final Trigger t = new Trigger.TriggerBuilder(s.getSubmitUser(),
-        this.triggerSource,
-        triggerCondition,
-        expireCondition,
-        actions)
-        .setSubmitTime(s.getSubmitTime())
-        .setLastModifyTime(s.getLastModifyTime())
-        .setId(s.getScheduleId())
-        .build();
+            this.triggerSource,
+            triggerCondition,
+            expireCondition,
+            actions)
+            .setSubmitTime(s.getSubmitTime())
+            .setLastModifyTime(s.getLastModifyTime())
+            .setId(s.getScheduleId())
+            .build();
 
+    t.setStatus(TriggerStatus.valueOf(s.getStatus()));
     if (s.isRecurring()) {
       t.setResetOnTrigger(true);
     } else {

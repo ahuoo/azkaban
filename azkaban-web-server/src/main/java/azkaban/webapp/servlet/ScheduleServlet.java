@@ -31,6 +31,7 @@ import azkaban.sla.SlaAction;
 import azkaban.sla.SlaOption;
 import azkaban.sla.SlaOption.SlaOptionBuilder;
 import azkaban.sla.SlaType;
+import azkaban.trigger.TriggerStatus;
 import azkaban.user.Permission;
 import azkaban.user.Permission.Type;
 import azkaban.user.User;
@@ -116,7 +117,9 @@ public class ScheduleServlet extends LoginAbstractAzkabanServlet {
       ajaxScheduleCronFlow(req, ret, session.getUser());
     } else if (ajaxName.equals("fetchSchedule")) {
       ajaxFetchSchedule(req, ret, session.getUser());
-    }
+    } else if (ajaxName.equals("updateScheduleStatus")) {
+      ajaxUpdateScheduleStatus(req, ret, session.getUser());
+  }
 
     if (ret != null) {
       this.writeJSON(resp, ret);
@@ -167,6 +170,37 @@ public class ScheduleServlet extends LoginAbstractAzkabanServlet {
     data.put("history", false);
     output.add(data);
   }
+
+  private void ajaxUpdateScheduleStatus(final HttpServletRequest req, final HashMap<String, Object> ret, final User user) {
+    try {
+      final int scheduleId = getIntParam(req, PARAM_SCHEDULE_ID);
+      final Schedule sched = this.scheduleManager.getSchedule(scheduleId);
+      if (sched == null) {
+        ret.put(PARAM_ERROR, "Error loading schedule. Schedule " + scheduleId + " doesn't exist");
+        return;
+      }
+
+      final Project project = this.projectManager.getProject(sched.getProjectId());
+      if (!hasPermission(project, user, Permission.Type.SCHEDULE)) {
+        ret.put(PARAM_ERROR, "User " + user + " does not have permission to disable this schedule.");
+        return;
+      }
+      final String status = getParam(req, PARAM_STATUS);
+      sched.setStatus(status);
+      this.scheduleManager.insertSchedule(sched);
+
+      this.projectManager.postProjectEvent(project, EventType.SCHEDULE, user.getUserId(), "Schedule for flow " + sched.getFlowName()
+                      + " has been added/changed.");
+
+    } catch (final ServletException e) {
+      ret.put(PARAM_ERROR, e.getMessage());
+    } catch (final ScheduleManagerException e) {
+      logger.error(e.getMessage(), e);
+      ret.put(PARAM_ERROR, e.getMessage());
+    }
+
+  }
+
 
   private void ajaxSetSla(final HttpServletRequest req, final HashMap<String, Object> ret,
       final User user) {

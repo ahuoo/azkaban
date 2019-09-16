@@ -13,6 +13,29 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
+function switchSchedStatus(scheduleId, status) {
+  var scheduleURL = contextURL + "/schedule"
+  var redirectURL = contextURL + "/schedule"
+  if(status == 'PAUSED'){
+     status = 'READY';
+  }else{
+     status = 'PAUSED';
+  }
+  var requestData = {
+    "ajax": "updateScheduleStatus",
+    "scheduleId": scheduleId,
+    "status": status
+  };
+  var successHandler = function (data) {
+    if (data.error) {
+      $('#errorMsg').text(data.error);
+    }
+    else {
+      window.location = redirectURL;
+    }
+  };
+  $.get(scheduleURL, requestData, successHandler, "json");
+}
 
 function removeSched(scheduleId) {
   var scheduleURL = contextURL + "/schedule"

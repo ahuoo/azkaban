@@ -37,7 +37,7 @@ public class Schedule {
   private final long lastModifyTime;
   private final ReadablePeriod period;
   private final String submitUser;
-  private final String status;
+  private String status;
   private final long submitTime;
   private final String cronExpression;
   private final boolean skipPastOccurrences = true;
@@ -159,6 +159,10 @@ public class Schedule {
 
   public String getStatus() {
     return this.status;
+  }
+
+  public void setStatus(String status) {
+    this.status = status;
   }
 
   public long getSubmitTime() {

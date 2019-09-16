@@ -86,6 +86,7 @@
             <th>Execution Options</th>
             <th>Has SLA</th>
             <th colspan="2" class="action ignoresort">Action</th>
+            <th>Status</th>
           </tr>
           </thead>
           <tbody>
@@ -157,6 +158,13 @@
                     Set SLA
                   </button>
                 </td>
+
+                <td>
+                  <button type="button" id="switchSchedStatus" class="btn btn-sm #if(${sched.status} == 'PAUSED')  btn-secondary #else btn-info #end"
+                          onclick="switchSchedStatus(${sched.scheduleId},'${sched.status}')">${sched.status}
+                  </button>
+                </td>
+
               </tr>
               #end
             #else
