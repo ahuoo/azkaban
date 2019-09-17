@@ -57,14 +57,14 @@ public class TriggerBasedScheduleLoader implements ScheduleLoader {
     final List<TriggerAction> actions = createActions(s);
 
     final Trigger t = new Trigger.TriggerBuilder(s.getSubmitUser(),
-            this.triggerSource,
-            triggerCondition,
-            expireCondition,
-            actions)
-            .setSubmitTime(s.getSubmitTime())
-            .setLastModifyTime(s.getLastModifyTime())
-            .setId(s.getScheduleId())
-            .build();
+        this.triggerSource,
+        triggerCondition,
+        expireCondition,
+        actions)
+        .setSubmitTime(s.getSubmitTime())
+        .setLastModifyTime(s.getLastModifyTime())
+        .setId(s.getScheduleId())
+        .build();
 
     t.setStatus(TriggerStatus.valueOf(s.getStatus()));
     if (s.isRecurring()) {
